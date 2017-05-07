@@ -103,10 +103,9 @@ def main():
         verbose=1
     )
 
-    plot_history_object(history_object)
  
     model.save('model.h5')
-    print("Model saved")
+    plot_history_object(history_object)
 
 
 
