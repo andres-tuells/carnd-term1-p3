@@ -53,7 +53,7 @@ def load_samples():
         reader = csv.reader(csvfile)
         return list(reader)
 
-def generator(samples, batch_size=32):
+def generator(samples, batch_size=8):
     num_samples = len(samples)
 
     while True: # Loop forever so the generator never terminates
@@ -83,7 +83,7 @@ def generator(samples, batch_size=32):
             # trim image to only see section with road
             X_train = np.array(images)
             y_train = np.array(angles)
-            yield (X_train, y_train)
+            yield shuffle(X_train, y_train)
 
 
 
@@ -110,8 +110,8 @@ def main():
 
     train_samples, validation_samples = train_test_split(samples, test_size=0.2)
     # compile and train the model using the generator function
-    train_generator = generator(train_samples, batch_size=32)
-    validation_generator = generator(validation_samples, batch_size=32)
+    train_generator = generator(train_samples)
+    validation_generator = generator(validation_samples)
 
     # 7. Define model architecture
     model = create_model()
@@ -120,7 +120,7 @@ def main():
     history_object = model.fit_generator(train_generator, 
         verbose=1, 
         validation_steps=len(validation_samples)*6, 
-        epochs=3, 
+        epochs=1, 
         validation_data=validation_generator, 
         steps_per_epoch=len(train_samples)*6
     )
