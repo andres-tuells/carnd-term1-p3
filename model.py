@@ -75,7 +75,7 @@ def plot_history_object( history_object ):
     for i, loss, val_loss in zip(range(1,1+len(history_object.history['loss'])),history_object.history['loss'], history_object.history['val_loss']):
         print("epoch", i)
         print("loss", loss)
-        print("val_loss", val_logg)
+        print("val_loss", val_loss)
 
     ### plot the training and validation loss for each epoch
     plt.plot(history_object.history['loss'])
@@ -110,7 +110,7 @@ def main():
 
  
     model.save('model.h5')
-    plot_history_object(history_object)
+    #plot_history_object(history_object)
 
 
 
