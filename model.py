@@ -72,6 +72,10 @@ def generator(samples, batch_size=32):
 def plot_history_object( history_object ):
     ### print the keys contained in the history object
     print(history_object.history.keys())
+    for i, loss, val_loss in zip(range(1,1+len(history_object.history['loss'])),history_object.history['loss'], history_object.history['val_loss']):
+        print("epoch", i)
+        print("loss", loss)
+        print("val_loss", val_logg)
 
     ### plot the training and validation loss for each epoch
     plt.plot(history_object.history['loss'])
@@ -97,9 +101,10 @@ def main():
     # 9. Fit model on training data
     history_object = model.fit_generator(
         train_generator, 
-        samples_per_epoch= len(train_samples), 
-        validation_data=validation_generator, nb_val_samples=len(validation_samples), 
-        nb_epoch=3, 
+        samples_per_epoch= len(train_samples)*6, 
+        validation_data=validation_generator, 
+        nb_val_samples=len(validation_samples)*6, 
+        nb_epoch=10, 
         verbose=1
     )
 
