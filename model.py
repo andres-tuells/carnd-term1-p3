@@ -23,13 +23,23 @@ def create_model():
                      output_shape=(row, col, ch)))
     model.add(Conv2D(16, (8, 8), strides=(4, 4), padding="same"))
     model.add(ELU())
+    model.add(MaxPooling2D(pool_size=(2,2)))
     model.add(Conv2D(32, (5, 5), strides=(2, 2), padding="same"))
     model.add(ELU())
+    model.add(MaxPooling2D(pool_size=(2,2)))
     model.add(Conv2D(64, (5, 5), strides=(2, 2), padding="same"))
+    model.add(ELU())
+    model.add(MaxPooling2D(pool_size=(2,2)))
     model.add(Flatten())
     model.add(Dropout(.2))
     model.add(ELU())
     model.add(Dense(512))
+    model.add(Dropout(.5))
+    model.add(ELU())
+    model.add(Dense(256))
+    model.add(Dropout(.5))
+    model.add(ELU())
+    model.add(Dense(128))
     model.add(Dropout(.5))
     model.add(ELU())
     model.add(Dense(1))
@@ -65,7 +75,7 @@ def generator(samples, batch_size=32):
             # trim image to only see section with road
             X_train = np.array(images)
             y_train = np.array(angles)
-            yield shuffle(X_train, y_train)
+            yield (X_train, y_train)
 
 
 
