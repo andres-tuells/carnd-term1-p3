@@ -70,9 +70,9 @@ def generator(samples, batch_size=8):
                     if i==0:
                         correction=0
                     elif i==1:
-                        correction=0.4
+                        correction=0.5
                     elif i==2:
-                        correction=-0.4
+                        correction=-0.5
                     angle = float(batch_sample[3])+correction
                     images.append(image)
                     angles.append(angle)
