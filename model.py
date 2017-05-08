@@ -70,9 +70,9 @@ def generator(samples, batch_size=8):
                     if i==0:
                         correction=0
                     elif i==1:
-                        correction=0.5
+                        correction=0.3
                     elif i==2:
-                        correction=-0.5
+                        correction=-0.3
                     angle = float(batch_sample[3])+correction
                     images.append(image)
                     angles.append(angle)
@@ -120,7 +120,7 @@ def main():
     history_object = model.fit_generator(train_generator, 
         verbose=1, 
         validation_steps=len(validation_samples)*6, 
-        epochs=1, 
+        epochs=3, 
         validation_data=validation_generator, 
         steps_per_epoch=len(train_samples)*6
     )
