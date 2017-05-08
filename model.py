@@ -64,13 +64,21 @@ def generator(samples, batch_size=32):
             images = []
             angles = []
             for batch_sample in batch_samples:
-                name = './data/IMG/'+batch_sample[0].split('/')[-1]
-                center_image = cv2.imread(name)
-                center_angle = float(batch_sample[3])
-                images.append(center_image)
-                angles.append(center_angle)
-                images.append(np.fliplr(center_image))
-                angles.append(-center_angle)
+                for i in range(0,3):
+                    name = './data/IMG/'+batch_sample[i].split('/')[-1]
+                    image = cv2.imread(name)
+                    if i==0:
+                        correction=0
+                    elif i==1:
+                        correction=0.3
+                    elif i==2:
+                        correction=-0.3
+                    angle = float(batch_sample[3])+correction
+                    images.append(image)
+                    angles.append(angle)
+                    images.append(np.fliplr(image))
+                    angles.append(-angle)
+
 
             # trim image to only see section with road
             X_train = np.array(images)
@@ -111,10 +119,10 @@ def main():
     # 9. Fit model on training data
     history_object = model.fit_generator(train_generator, 
         verbose=1, 
-        validation_steps=len(validation_samples)*2, 
+        validation_steps=len(validation_samples)*6, 
         epochs=3, 
         validation_data=validation_generator, 
-        steps_per_epoch=len(train_samples)*2
+        steps_per_epoch=len(train_samples)*6
     )
 
  
