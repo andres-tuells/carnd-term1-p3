@@ -21,11 +21,11 @@ def create_model():
     model.add(Lambda(lambda x: x/127.5 - 1.,
                      input_shape=(row, col, ch),
                      output_shape=(row, col, ch)))
-    model.add(Conv2D(16, 8, 8, subsample=(4, 4), border_mode="same"))
+    model.add(Conv2D(16, (8, 8), strides=(4, 4), padding="same"))
     model.add(ELU())
-    model.add(Conv2D(32, 5, 5, subsample=(2, 2), border_mode="same"))
+    model.add(Conv2D(32, (5, 5), strides=(2, 2), padding="same"))
     model.add(ELU())
-    model.add(Conv2D(64, 5, 5, subsample=(2, 2), border_mode="same"))
+    model.add(Conv2D(64, (5, 5), strides=(2, 2), padding="same"))
     model.add(Flatten())
     model.add(Dropout(.2))
     model.add(ELU())
@@ -99,13 +99,12 @@ def main():
     model = create_model()
  
     # 9. Fit model on training data
-    history_object = model.fit_generator(
-        train_generator, 
-        samples_per_epoch= len(train_samples)*6, 
+    history_object = model.fit_generator(train_generator, 
+        verbose=1, 
+        validation_steps=len(validation_samples)*6, 
+        epochs=3, 
         validation_data=validation_generator, 
-        nb_val_samples=len(validation_samples)*6, 
-        nb_epoch=10, 
-        verbose=1
+        steps_per_epoch=len(train_samples)*6
     )
 
  
