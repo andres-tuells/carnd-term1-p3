@@ -21,6 +21,44 @@ def create_model():
     model.add(Lambda(lambda x: x/127.5 - 1.,
                      input_shape=(row, col, ch),
                      output_shape=(row, col, ch)))
+
+    model.add(Conv2D(24, (5, 5), strides=(4, 4), padding="same"))
+    model.add(ELU())
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Conv2D(36, (5, 5), strides=(2, 2), padding="same"))
+    model.add(ELU())
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Conv2D(48, (5, 5), strides=(2, 2), padding="same"))
+    model.add(ELU())
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Conv2D(64, (3, 3), padding="same"))
+    model.add(ELU())
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Conv2D(64, (3, 3), padding="same"))
+    model.add(ELU())
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Dropout(.2))
+    model.add(Flatten())
+    model.add(Dense(1164))
+    model.add(Dropout(.5))
+    model.add(ELU())
+    model.add(Dense(100))
+    model.add(Dropout(.5))
+    model.add(ELU())
+    model.add(Dense(50))
+    model.add(Dropout(.5))
+    model.add(ELU())
+    model.add(Dense(10))
+    model.add(Dropout(.5))
+    model.add(ELU())
+    model.add(Dense(1, name='output'))
+
+    model.summary()
+
+    model.compile(optimizer="adam", loss="mse")
+
+    return model
+
     model.add(Conv2D(16, (8, 8), strides=(4, 4), padding="same"))
     model.add(ELU())
     model.add(MaxPooling2D(pool_size=(2,2)))
@@ -66,9 +104,9 @@ def generator(samples, batch_size=8):
                     if i==0:
                         correction=0
                     elif i==1:
-                        correction=0.3
+                        correction=0.12
                     elif i==2:
-                        correction=-0.3
+                        correction=-0.12
                     angle = float(batch_sample[3])+correction
                     images.append(image)
                     angles.append(angle)
