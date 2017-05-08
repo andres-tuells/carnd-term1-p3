@@ -30,13 +30,8 @@ def create_model():
     model.add(Conv2D(64, (5, 5), strides=(2, 2), padding="same"))
     model.add(ELU())
     model.add(MaxPooling2D(pool_size=(2,2)))
-    model.add(Conv2D(128, (3, 3), strides=(1, 1), padding="same"))
-    model.add(ELU())
-    model.add(Conv2D(256, (3, 3), strides=(1, 1), padding="same"))
-    model.add(ELU())
     model.add(Flatten())
     model.add(Dropout(.2))
-    model.add(ELU())
     model.add(Dense(1024))
     model.add(Dropout(.5))
     model.add(ELU())
@@ -127,7 +122,7 @@ def main():
     history_object = model.fit_generator(train_generator, 
         verbose=1, 
         validation_steps=len(validation_samples)*6, 
-        epochs=3, 
+        epochs=1, 
         validation_data=validation_generator, 
         steps_per_epoch=len(train_samples)*6
     )
