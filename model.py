@@ -97,7 +97,7 @@ def load_samples():
 def change_bright(img):
     temp = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     # Compute a random brightness value and apply to the image
-    brightness = BRIGHTNESS_RANGE + np.random.uniform()
+    brightness = .25 + np.random.uniform()
     temp[:, :, 2] = temp[:, :, 2] * brightness
     # Convert back to RGB and return
     return cv2.cvtColor(temp, cv2.COLOR_HSV2RGB)
