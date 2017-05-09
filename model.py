@@ -103,7 +103,7 @@ def generator(samples, batch_size=8):
             images = []
             angles = []
             for batch_sample in batch_samples:
-                for i in range(0,3):
+                for i in range(0,1):
                     name = './data/IMG/'+batch_sample[i].split('/')[-1]
                     image = cv2.imread(name)
                     if i==0:
@@ -147,7 +147,7 @@ def main():
     print("Starting training")
     samples = load_samples()
 
-    train_samples, validation_samples = train_test_split(samples, test_size=0.2)
+    train_samples, validation_samples = train_test_split(samples, test_size=0.1)
     # compile and train the model using the generator function
     train_generator = generator(train_samples)
     validation_generator = generator(validation_samples)
@@ -158,10 +158,10 @@ def main():
     # 9. Fit model on training data
     history_object = model.fit_generator(train_generator, 
         verbose=1, 
-        validation_steps=len(validation_samples)*6, 
-        epochs=1, 
+        validation_steps=len(validation_samples)*2, 
+        epochs=10, 
         validation_data=validation_generator, 
-        steps_per_epoch=len(train_samples)*6
+        steps_per_epoch=len(train_samples)*2
     )
 
  
