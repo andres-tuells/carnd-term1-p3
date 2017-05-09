@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 
+from keras.layers.noise import GaussianNoise
 
 #from keras import backend as K
 #K.set_image_dim_ordering('th')
@@ -23,6 +24,12 @@ def create_model():
     # Normalize
     model.add(Lambda(lambda x: x/127.5 - 1.0,input_shape=(160,320,3)))
     model.add(Cropping2D(cropping=((70, 25), (0, 0))))
+
+    # noise input
+    percent_noise = 0.1
+    noise = percent_noise
+    model.add(GaussianNoise(noise))
+
 
     # Add three 5x5 convolution layers (output depth 24, 36, and 48), each with 2x2 stride
     model.add(Conv2D(24, (5, 5), strides=(2, 2), border_mode='valid', W_regularizer=l2(0.001)))
@@ -116,7 +123,7 @@ def generator(samples, batch_size=8):
                 for i in range(0,1):
                     name = './data/IMG/'+batch_sample[i].split('/')[-1]
                     image = cv2.imread(name)
-                    image = change_bright(image)
+                    #image = change_bright(image)
                     if i==0:
                         correction=0
                     elif i==1:
