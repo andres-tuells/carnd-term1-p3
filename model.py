@@ -174,10 +174,10 @@ def main():
     validation_generator = generator(validation_samples)
 
     # 7. Define model architecture
-    for c in range(0,0.5,0.05):
-        correction_factor=c
+    for c in range(0,10):
+        correction_factor=c*0.05
         model = create_model()
-        print("Correction", c)
+        print("Correction", correction_factor)
  
         # 9. Fit model on training data
         history_object = model.fit_generator(train_generator, 
