@@ -43,6 +43,8 @@ def create_model():
     # Add a flatten layer
     model.add(Flatten())
 
+    model.add(Dense(1164, W_regularizer=l2(0.001)))
+    model.add(ELU())
     # Add three fully connected layers (depth 100, 50, 10), tanh activation (and dropouts)
     model.add(Dense(100, W_regularizer=l2(0.001)))
     model.add(ELU())
@@ -92,6 +94,14 @@ def load_samples():
         reader = csv.reader(csvfile)
         return list(reader)[1:]
 
+def change_bright(img):
+    temp = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    # Compute a random brightness value and apply to the image
+    brightness = BRIGHTNESS_RANGE + np.random.uniform()
+    temp[:, :, 2] = temp[:, :, 2] * brightness
+    # Convert back to RGB and return
+    return cv2.cvtColor(temp, cv2.COLOR_HSV2RGB)
+
 def generator(samples, batch_size=8):
     num_samples = len(samples)
 
@@ -103,9 +113,10 @@ def generator(samples, batch_size=8):
             images = []
             angles = []
             for batch_sample in batch_samples:
-                for i in range(0,3):
+                for i in range(0,1):
                     name = './data/IMG/'+batch_sample[i].split('/')[-1]
                     image = cv2.imread(name)
+                    image = change_bright(image)
                     if i==0:
                         correction=0
                     elif i==1:
@@ -159,7 +170,7 @@ def main():
     history_object = model.fit_generator(train_generator, 
         verbose=1, 
         validation_steps=len(validation_samples)*6, 
-        epochs=1, 
+        epochs=3, 
         validation_data=validation_generator, 
         steps_per_epoch=len(train_samples)*6
     )
