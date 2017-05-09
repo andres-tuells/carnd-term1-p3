@@ -169,10 +169,10 @@ def main():
     # 9. Fit model on training data
     history_object = model.fit_generator(train_generator, 
         verbose=1, 
-        validation_steps=len(validation_samples)*6, 
+        validation_steps=len(validation_samples)*2, 
         epochs=3, 
         validation_data=validation_generator, 
-        steps_per_epoch=len(train_samples)*6
+        steps_per_epoch=len(train_samples)*2
     )
 
  
