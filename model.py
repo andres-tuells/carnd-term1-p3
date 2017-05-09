@@ -174,7 +174,7 @@ def main():
     validation_generator = generator(validation_samples)
 
     # 7. Define model architecture
-    for c in range(0.1,04,0.05):
+    for c in range(0,0.5,0.05):
         correction_factor=c
         model = create_model()
         print("Correction", c)
