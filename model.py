@@ -16,6 +16,8 @@ from keras.layers.noise import GaussianNoise
 #from keras import backend as K
 #K.set_image_dim_ordering('th')
 
+correction_factor = 0.2
+
 def create_model():
     ch, row, col = 3, 160, 320  # camera format
 
@@ -120,16 +122,16 @@ def generator(samples, batch_size=8):
             images = []
             angles = []
             for batch_sample in batch_samples:
-                for i in range(0,1):
+                for i in range(0,3):
                     name = './data/IMG/'+batch_sample[i].split('/')[-1]
                     image = cv2.imread(name)
                     #image = change_bright(image)
                     if i==0:
                         correction=0
                     elif i==1:
-                        correction=0.3
+                        correction=correction_factor
                     elif i==2:
-                        correction=-0.3
+                        correction=-correction_factor
                     angle = float(batch_sample[3])+correction
                     images.append(image)
                     angles.append(angle)
@@ -162,6 +164,7 @@ def plot_history_object( history_object ):
     plt.show()
     
 def main():
+    global correction_factor
     print("Starting training")
     samples = load_samples()
 
@@ -171,16 +174,19 @@ def main():
     validation_generator = generator(validation_samples)
 
     # 7. Define model architecture
-    model = create_model()
+    for c in range(0.1,04,0.05):
+        correction_factor=c
+        model = create_model()
+        print("Correction", c)
  
-    # 9. Fit model on training data
-    history_object = model.fit_generator(train_generator, 
-        verbose=1, 
-        validation_steps=len(validation_samples)*2, 
-        epochs=3, 
-        validation_data=validation_generator, 
-        steps_per_epoch=len(train_samples)*2
-    )
+        # 9. Fit model on training data
+        history_object = model.fit_generator(train_generator, 
+            verbose=1, 
+            validation_steps=len(validation_samples)*6, 
+            epochs=1, 
+            validation_data=validation_generator, 
+            steps_per_epoch=len(train_samples)*6
+        )
 
  
     model.save('model.h5')
