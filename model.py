@@ -19,7 +19,7 @@ from random import random, choice
 #K.set_image_dim_ordering('th')
 
 #correction_factor = 0.04
-correction_factor = 0.12
+correction_factor = 0.3
 
 def create_model():
     ch, row, col = 3, 160, 320  # camera format
