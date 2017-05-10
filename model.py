@@ -19,7 +19,7 @@ from random import random, choice
 #K.set_image_dim_ordering('th')
 
 #correction_factor = 0.04
-correction_factor = 0.4
+correction_factor = 0.3
 
 def create_model():
     ch, row, col = 3, 160, 320  # camera format
@@ -130,7 +130,7 @@ def generator(samples, batch_size=8):
     while True: # Loop forever so the generator never terminates
         samples = shuffle(samples)
         for sample in samples:
-            i = choice([0,1,2])
+            i = choice([0,0,1,2])
             name = './data/IMG/'+sample[i].split('/')[-1]
             image = cv2.imread(name)
             angle = float(sample[3])
