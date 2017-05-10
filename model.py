@@ -181,10 +181,10 @@ def main():
     # 9. Fit model on training data
     history_object = model.fit_generator(train_generator, 
         verbose=1, 
-        validation_steps=len(validation_samples)*6, 
-        epochs=3, 
+        validation_steps=len(validation_samples)*6/10, 
+        epochs=10, 
         validation_data=validation_generator, 
-        steps_per_epoch=len(train_samples)*6
+        steps_per_epoch=len(train_samples)*6/10
     )
  
     model.save('model.h5')
