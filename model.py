@@ -182,7 +182,7 @@ def main():
     history_object = model.fit_generator(train_generator, 
         verbose=1, 
         validation_steps=len(validation_samples), 
-        epochs=2, 
+        epochs=1, 
         validation_data=validation_generator, 
         steps_per_epoch=len(train_samples)
     )
