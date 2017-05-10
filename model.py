@@ -167,7 +167,7 @@ def plot_history_object( history_object ):
 def clean_samples(samples):
     rs = []
     for sample in samples:
-        if sample[3]==0. and random()<=0.1:continue
+        if float(sample[3])==0. and random()<=0.1:continue
         rs.append(sample)
     return rs
     
