@@ -163,11 +163,19 @@ def plot_history_object( history_object ):
     plt.xlabel('epoch')
     plt.legend(['training set', 'validation set'], loc='upper right')
     plt.show()
+
+def clean_samples(samples):
+    rs = []
+    for sample in samples:
+        if sample[3]==0. and random()<=0.1:continue
+        rs.append(sample)
+    return rs
     
 def main():
     global correction_factor
     print("Starting training")
     samples = load_samples()
+    samples = clean_samples(samples)
 
     train_samples, validation_samples = train_test_split(samples, test_size=0.1)
     # compile and train the model using the generator function
@@ -182,7 +190,7 @@ def main():
     history_object = model.fit_generator(train_generator, 
         verbose=1, 
         validation_steps=len(validation_samples), 
-        epochs=1, 
+        epochs=3, 
         validation_data=validation_generator, 
         steps_per_epoch=len(train_samples)
     )
