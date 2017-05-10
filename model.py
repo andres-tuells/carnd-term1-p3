@@ -16,7 +16,7 @@ from keras.layers.noise import GaussianNoise
 #from keras import backend as K
 #K.set_image_dim_ordering('th')
 
-correction_factor = 0.2
+correction_factor = 0.04
 
 def create_model():
     ch, row, col = 3, 160, 320  # camera format
@@ -174,20 +174,17 @@ def main():
     validation_generator = generator(validation_samples)
 
     # 7. Define model architecture
-    for c in range(0,10):
-        correction_factor=c*0.05
-        model = create_model()
-        print("Correction", correction_factor)
- 
-        # 9. Fit model on training data
-        history_object = model.fit_generator(train_generator, 
-            verbose=1, 
-            validation_steps=len(validation_samples)*6/10, 
-            epochs=1, 
-            validation_data=validation_generator, 
-            steps_per_epoch=len(train_samples)*6/10
-        )
+    model = create_model()
+    print("Correction", correction_factor)
 
+    # 9. Fit model on training data
+    history_object = model.fit_generator(train_generator, 
+        verbose=1, 
+        validation_steps=len(validation_samples)*6, 
+        epochs=3, 
+        validation_data=validation_generator, 
+        steps_per_epoch=len(train_samples)*6
+    )
  
     model.save('model.h5')
     #plot_history_object(history_object)
