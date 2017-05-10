@@ -123,7 +123,7 @@ def generator(samples, batch_size=8):
             images = []
             angles = []
             for batch_sample in batch_samples:
-                for i in range(0,3):
+                for i in range(0,1):
                     name = './data/IMG/'+batch_sample[i].split('/')[-1]
                     image = cv2.imread(name)
                     #image = change_bright(image)
@@ -133,6 +133,7 @@ def generator(samples, batch_size=8):
                         correction=correction_factor
                     elif i==2:
                         correction=-correction_factor
+                    if batch_sample[3]==0:continue
                     angle = float(batch_sample[3])+correction
                     images.append(image)
                     angles.append(angle)
@@ -182,7 +183,7 @@ def main():
     history_object = model.fit_generator(train_generator, 
         verbose=1, 
         validation_steps=len(validation_samples)*6/10, 
-        epochs=2, 
+        epochs=10, 
         validation_data=validation_generator, 
         steps_per_epoch=len(train_samples)*6/10
     )
@@ -194,3 +195,4 @@ def main():
 
 if __name__=='__main__':
     main()
+
