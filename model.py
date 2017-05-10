@@ -13,6 +13,8 @@ from sklearn.utils import shuffle
 
 from keras.layers.noise import GaussianNoise
 
+from random import random
+
 #from keras import backend as K
 #K.set_image_dim_ordering('th')
 
@@ -115,38 +117,26 @@ def change_bright(img):
 
 def generator(samples, batch_size=8):
     num_samples = len(samples)
-
+    images = []
+    angles = []
     while True: # Loop forever so the generator never terminates
-        shuffle(samples)
-        for offset in range(0, num_samples, batch_size):
-            batch_samples = samples[offset:offset+batch_size]
-
-            images = []
-            angles = []
-            for batch_sample in batch_samples:
-                for i in range(0,1):
-                    name = './data/IMG/'+batch_sample[i].split('/')[-1]
-                    image = cv2.imread(name)
-                    #image = change_bright(image)
-                    if i==0:
-                        correction=0
-                    elif i==1:
-                        correction=correction_factor
-                    elif i==2:
-                        correction=-correction_factor
-                    if batch_sample[3]==0:continue
-                    angle = float(batch_sample[3])+correction
-                    images.append(image)
-                    angles.append(angle)
-                    images.append(np.fliplr(image))
-                    angles.append(-angle)
-
-
-            # trim image to only see section with road
-            X_train = np.array(images)
-            y_train = np.array(angles)
-            yield shuffle(X_train, y_train)
-
+        samples = shuffle(samples)
+        for sample in samples:
+            name = './data/IMG/'+sample[0].split('/')[-1]
+            image = cv2.imread(name)
+            angle = float(sample[3])
+            if random()>0.5:
+                images.append(image)
+                angles.append(angle)
+            else:
+                images.append(np.fliplr(image))
+                angles.append(-angle)
+            if len(images)>=batch_size:
+                X_train = np.array(images)
+                y_train = np.array(angles)
+                images=[]
+                angles=[]
+                yield shuffle(X_train, y_train)
 
 
 def plot_history_object( history_object ):
@@ -183,10 +173,10 @@ def main():
     # 9. Fit model on training data
     history_object = model.fit_generator(train_generator, 
         verbose=1, 
-        validation_steps=len(validation_samples)*6/10, 
-        epochs=2, 
+        validation_steps=len(validation_samples), 
+        epochs=3, 
         validation_data=validation_generator, 
-        steps_per_epoch=len(train_samples)*6/10
+        steps_per_epoch=len(train_samples)
     )
  
     model.save('model.h5')
