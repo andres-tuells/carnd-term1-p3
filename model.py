@@ -17,6 +17,7 @@ from keras.layers.noise import GaussianNoise
 #K.set_image_dim_ordering('th')
 
 correction_factor = 0.04
+correction_factor = 0.12
 
 def create_model():
     ch, row, col = 3, 160, 320  # camera format
@@ -28,9 +29,9 @@ def create_model():
     model.add(Cropping2D(cropping=((70, 25), (0, 0))))
 
     # noise input
-    percent_noise = 0.1
-    noise = percent_noise
-    model.add(GaussianNoise(noise))
+    # percent_noise = 0.1
+    # noise = percent_noise
+    # model.add(GaussianNoise(noise))
 
 
     # Add three 5x5 convolution layers (output depth 24, 36, and 48), each with 2x2 stride
