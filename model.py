@@ -18,8 +18,8 @@ from random import random
 #from keras import backend as K
 #K.set_image_dim_ordering('th')
 
-correction_factor = 0.04
-#correction_factor = 0.12
+#correction_factor = 0.04
+correction_factor = 0.12
 
 def create_model():
     ch, row, col = 3, 160, 320  # camera format
@@ -130,9 +130,12 @@ def generator(samples, batch_size=8):
     while True: # Loop forever so the generator never terminates
         samples = shuffle(samples)
         for sample in samples:
-            name = './data/IMG/'+sample[0].split('/')[-1]
+            i = random.choice([0,1,2])
+            name = './data/IMG/'+sample[i].split('/')[-1]
             image = cv2.imread(name)
             angle = float(sample[3])
+            if i==1:angle += correction_factor
+            if i==2:angle -= correction_factor
             if random()>0.5:
                 images.append(image)
                 angles.append(angle)
@@ -175,7 +178,7 @@ def main():
     global correction_factor
     print("Starting training")
     samples = load_samples()
-    samples = clean_samples(samples)
+    #samples = clean_samples(samples)
 
     train_samples, validation_samples = train_test_split(samples, test_size=0.1)
     # compile and train the model using the generator function
