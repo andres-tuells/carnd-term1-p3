@@ -22,60 +22,61 @@ correction_factor = 0.04
 def create_model():
     ch, row, col = 3, 160, 320  # camera format
 
-    model = Sequential()
+    # model = Sequential()
 
-    # Normalize
-    model.add(Lambda(lambda x: x/127.5 - 1.0,input_shape=(160,320,3)))
-    model.add(Cropping2D(cropping=((70, 25), (0, 0))))
+    # # Normalize
+    # model.add(Lambda(lambda x: x/127.5 - 1.0,input_shape=(160,320,3)))
+    # model.add(Cropping2D(cropping=((70, 25), (0, 0))))
 
-    # noise input
-    # percent_noise = 0.1
-    # noise = percent_noise
-    # model.add(GaussianNoise(noise))
+    # # noise input
+    # # percent_noise = 0.1
+    # # noise = percent_noise
+    # # model.add(GaussianNoise(noise))
 
 
-    # Add three 5x5 convolution layers (output depth 24, 36, and 48), each with 2x2 stride
-    model.add(Conv2D(24, (5, 5), strides=(2, 2), border_mode='valid', W_regularizer=l2(0.001)))
-    model.add(ELU())
-    model.add(Conv2D(36, (5, 5), strides=(2, 2), border_mode='valid', W_regularizer=l2(0.001)))
-    model.add(ELU())
-    model.add(Conv2D(48, (5, 5), strides=(2, 2), border_mode='valid', W_regularizer=l2(0.001)))
-    model.add(ELU())
+    # # Add three 5x5 convolution layers (output depth 24, 36, and 48), each with 2x2 stride
+    # model.add(Conv2D(24, (5, 5), strides=(2, 2), border_mode='valid', W_regularizer=l2(0.001)))
+    # model.add(ELU())
+    # model.add(Conv2D(36, (5, 5), strides=(2, 2), border_mode='valid', W_regularizer=l2(0.001)))
+    # model.add(ELU())
+    # model.add(Conv2D(48, (5, 5), strides=(2, 2), border_mode='valid', W_regularizer=l2(0.001)))
+    # model.add(ELU())
 
-    #model.add(Dropout(0.50))
+    # #model.add(Dropout(0.50))
     
-    # Add two 3x3 convolution layers (output depth 64, and 64)
-    model.add(Conv2D(64, (3, 3), border_mode='valid', W_regularizer=l2(0.001)))
-    model.add(ELU())
-    model.add(Conv2D(64, (3, 3), border_mode='valid', W_regularizer=l2(0.001)))
-    model.add(ELU())
+    # # Add two 3x3 convolution layers (output depth 64, and 64)
+    # model.add(Conv2D(64, (3, 3), border_mode='valid', W_regularizer=l2(0.001)))
+    # model.add(ELU())
+    # model.add(Conv2D(64, (3, 3), border_mode='valid', W_regularizer=l2(0.001)))
+    # model.add(ELU())
 
-    # Add a flatten layer
-    model.add(Flatten())
+    # # Add a flatten layer
+    # model.add(Flatten())
 
-    model.add(Dense(1164, W_regularizer=l2(0.001)))
-    model.add(ELU())
-    # Add three fully connected layers (depth 100, 50, 10), tanh activation (and dropouts)
-    model.add(Dense(100, W_regularizer=l2(0.001)))
-    model.add(ELU())
-    #model.add(Dropout(0.50))
-    model.add(Dense(50, W_regularizer=l2(0.001)))
-    model.add(ELU())
-    #model.add(Dropout(0.50))
-    model.add(Dense(10, W_regularizer=l2(0.001)))
-    model.add(ELU())
-    #model.add(Dropout(0.50))
+    # model.add(Dense(1164, W_regularizer=l2(0.001)))
+    # model.add(ELU())
+    # # Add three fully connected layers (depth 100, 50, 10), tanh activation (and dropouts)
+    # model.add(Dense(100, W_regularizer=l2(0.001)))
+    # model.add(ELU())
+    # #model.add(Dropout(0.50))
+    # model.add(Dense(50, W_regularizer=l2(0.001)))
+    # model.add(ELU())
+    # #model.add(Dropout(0.50))
+    # model.add(Dense(10, W_regularizer=l2(0.001)))
+    # model.add(ELU())
+    # #model.add(Dropout(0.50))
 
-    # Add a fully connected output layer
-    model.add(Dense(1))
-    model.compile(optimizer="adam", loss="mse")
+    # # Add a fully connected output layer
+    # model.add(Dense(1))
+    # model.compile(optimizer="adam", loss="mse")
 
-    return model
+    # return model
 
     model = Sequential()
     model.add(Lambda(lambda x: x/127.5 - 1.,
                      input_shape=(row, col, ch),
                      output_shape=(row, col, ch)))
+    #model.add(Cropping2D(cropping=((70, 25), (0, 0))))
     model.add(Conv2D(16, (8, 8), strides=(4, 4), padding="same"))
     model.add(ELU())
     model.add(MaxPooling2D(pool_size=(2,2)))
