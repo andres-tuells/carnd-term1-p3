@@ -13,7 +13,7 @@ from sklearn.utils import shuffle
 
 from keras.layers.noise import GaussianNoise
 
-from random import random
+from random import random, choice
 
 #from keras import backend as K
 #K.set_image_dim_ordering('th')
@@ -130,7 +130,7 @@ def generator(samples, batch_size=8):
     while True: # Loop forever so the generator never terminates
         samples = shuffle(samples)
         for sample in samples:
-            i = random.choice([0,1,2])
+            i = choice([0,1,2])
             name = './data/IMG/'+sample[i].split('/')[-1]
             image = cv2.imread(name)
             angle = float(sample[3])
